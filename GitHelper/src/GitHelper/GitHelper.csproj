@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <!-- UseWindowsForms is a .NET (Core) property; on .NET Framework the
+         assemblies are referenced by hand below. -->
+    <LangVersion>7.3</LangVersion>
+    <!-- 64-bit, so reg.exe and the loaded hive are not seen through the WOW64
+         redirector when the installer patches Visual Studio's private hive. -->
+    <Prefer32Bit>false</Prefer32Bit>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- The exe's own icon: Explorer, the taskbar, and VS's External Tools list -->
+    <ApplicationIcon>GitHelper.ico</ApplicationIcon>
+    <RootNamespace>GitHelper</RootNamespace>
+    <AssemblyName>GitHelper</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+
+    <!-- Build straight into the folder Visual Studio's External Tool entry
+         points at, so a rebuild is the deployment. No per-framework or
+         per-configuration subfolder: the registered path is exactly
+         C:\Camtek\Build\Tools\GitHelper.exe.
+         Close the dialog before rebuilding - a running instance locks the exe. -->
+    <OutputPath>C:\Camtek\Build\Tools\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <!-- InputBox, for the soft-reset count -->
+    <Reference Include="Microsoft.VisualBasic" />
+    <!-- UI Automation, to read Visual Studio's Git Changes commit box -->
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <!-- Makes the designer open the forms and keeps the generated code beside them -->
+  <ItemGroup>
+    <Compile Update="frmMain.cs" SubType="Form" />
+    <Compile Update="frmMain.Designer.cs" DependentUpon="frmMain.cs" />
+    <Compile Update="frmInstall.cs" SubType="Form" />
+    <Compile Update="frmInstall.Designer.cs" DependentUpon="frmInstall.cs" />
+    <Compile Update="frmSwitchBranch.cs" SubType="Form" />
+    <Compile Update="frmSwitchBranch.Designer.cs" DependentUpon="frmSwitchBranch.cs" />
+    <Compile Update="frmCheckMerge.cs" SubType="Form" />
+    <Compile Update="frmCheckMerge.Designer.cs" DependentUpon="frmCheckMerge.cs" />
+    <Compile Update="frmSwitchUser.cs" SubType="Form" />
+    <Compile Update="frmSwitchUser.Designer.cs" DependentUpon="frmSwitchUser.cs" />
+    <Compile Update="frmShowLog.cs" SubType="Form" />
+    <Compile Update="frmMissingLog.cs" SubType="Form" />
+    <Compile Update="frmAdmin.cs" SubType="Form" />
+    <Compile Update="frmAdmin.Designer.cs" DependentUpon="frmAdmin.cs" />
+    <Compile Update="frmMissingLog.Designer.cs" DependentUpon="frmMissingLog.cs" />
+    <Compile Update="frmShowLog.Designer.cs" DependentUpon="frmShowLog.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+    <!-- Embedded as well as applied to the exe: the forms load it from here, so
+         window and Alt-Tab icons carry every size rather than the single one
+         Icon.ExtractAssociatedIcon would give back. -->
+    <!-- The commit-msg hook CommitHook.Ensure writes into each working copy
+         as .githooks/commit-msg. Edit the policy here and rebuild.
+         Switched off for now: embedded only when COMMIT_HOOK is defined -
+         see the top of CommitHook.cs. -->
+    <EmbeddedResource Include="Hooks\commit-msg" Condition="$(DefineConstants.Contains('COMMIT_HOOK'))">
+      <LogicalName>GitHelper.commit-msg</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GitHelper.ico">
+      <LogicalName>GitHelper.ico</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

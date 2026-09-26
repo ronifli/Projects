@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+  <assemblyIdentity version="1.0.0.0" name="GitHelper.app" />
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <!-- DPI-UNAWARE, on purpose.
+           Windows then reports 96 dpi whatever the display is set to, the
+           designer's coordinates are the pixels that get drawn, and Windows
+           stretches the finished window for a scaled display. Slightly soft
+           above 100%, never misaligned.
+
+           The alternatives were tried and both failed on a scaled Windows 11
+           machine: per-monitor v2 requires the app to re-lay itself out on
+           every DPI change, and system awareness plus AutoScaleMode.Font grew
+           the font faster than the row heights, clipping every label. A dialog
+           that is readable but soft beats one whose controls overlap.
+
+           Consequence for the code: layout may use plain design-time pixels
+           (see InputLeft in MainForm) because there is no scaling to track. -->
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">false</dpiAware>
+
+      <!-- Lifts the 260-character path limit, for deep working copies. Needs
+           HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled on
+           the machine as well; harmless when that is not set. -->
+      <longPathAware xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">true</longPathAware>
+    </windowsSettings>
+  </application>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- Windows 10/11; without this the OS reports 6.2 and the DPI settings
+           above are ignored. -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+    </application>
+  </compatibility>
+</assembly>

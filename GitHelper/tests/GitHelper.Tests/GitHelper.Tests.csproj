@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <RootNamespace>GitHelper.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <!-- The message format is UI-free, so it is compiled in directly rather than
+       referencing the WinForms project. -->
+  <ItemGroup>
+    <Compile Include="..\..\src\GitHelper\CommitMessage.cs" Link="CommitMessage.cs" />
+    <Compile Include="..\..\src\GitHelper\CommitHook.cs" Link="CommitHook.cs" />
+    <Compile Include="..\..\src\GitHelper\Git.cs" Link="Git.cs" />
+    <Compile Include="..\..\src\GitHelper\CommitLog.cs" Link="CommitLog.cs" />
+    <Compile Include="..\..\src\GitHelper\FileCompare.cs" Link="FileCompare.cs" />
+    <Compile Include="..\..\src\GitHelper\MergeAi.cs" Link="MergeAi.cs" />
+    <Compile Include="..\..\src\GitHelper\MissingLines.cs" Link="MissingLines.cs" />
+    <Compile Include="..\..\src\GitHelper\MessageAudit.cs" Link="MessageAudit.cs" />
+    <Compile Include="..\..\src\GitHelper\MergeCheck.cs" Link="MergeCheck.cs" />
+    <Compile Include="..\..\src\GitHelper\AiBody.cs" Link="AiBody.cs" />
+    <Compile Include="..\..\src\GitHelper\CopilotSetup.cs" Link="CopilotSetup.cs" />
+    <Compile Include="..\..\src\GitHelper\GitCredentials.cs" Link="GitCredentials.cs" />
+    <Compile Include="..\..\src\GitHelper\WindowsCredentials.cs" Link="WindowsCredentials.cs" />
+    <Compile Include="..\..\src\GitHelper\Settings.cs" Link="Settings.cs" />
+    <Compile Include="..\..\src\GitHelper\LineLimitedTextBox.cs" Link="LineLimitedTextBox.cs" />
+    <!-- Same logical name as in GitHelper.exe, so CommitHook finds it here too -->
+    <EmbeddedResource Include="..\..\src\GitHelper\Hooks\commit-msg" Link="commit-msg" Condition="$(DefineConstants.Contains('COMMIT_HOOK'))">
+      <LogicalName>GitHelper.commit-msg</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+</Project>

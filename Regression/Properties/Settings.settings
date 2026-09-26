@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Regression.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RepoPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\camtek</Value>
+    </Setting>
+    <Setting Name="SolutionPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\camtek\build\ace.sln</Value>
+    </Setting>
+    <Setting Name="StopAppsScript" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Camtek\Build\StopApps.cmd</Value>
+    </Setting>
+    <Setting Name="BuildConfiguration" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Release</Value>
+    </Setting>
+    <Setting Name="MSBuildPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DevenvPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SparkRunnerPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\camtek\bin\SparkRunner.exe</Value>
+    </Setting>
+    <Setting Name="SparkRunner" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SparkRunner.exe</Value>
+    </Setting>
+    <Setting Name="SparkRunnerArguments" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Auto</Value>
+    </Setting>
+    <Setting Name="WaitHours" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="PollSeconds" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="LogFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Regression\Regression.log</Value>
+    </Setting>
+    <Setting Name="SmtpHost" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">cims-com.mail.protection.outlook.com</Value>
+    </Setting>
+    <Setting Name="SmtpPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="SmtpSsl" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SmtpUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">wbservice-il@cims.com</Value>
+    </Setting>
+    <Setting Name="MailFrom" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">regression@Cims.com</Value>
+    </Setting>
+    <Setting Name="MailTo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">roni.fli@gmail.com</Value>
+    </Setting>
+    <Setting Name="SmtpPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">PpHhtptE88</Value>
+    </Setting>
+    <Setting Name="RepoPaths" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\camtek;C:\vscan90</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
