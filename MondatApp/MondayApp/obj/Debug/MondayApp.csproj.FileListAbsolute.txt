@@ -1,0 +1,17 @@
+C:\DevTools\MondatApp\MondayApp\bin\Debug\MondayApp.ini
+C:\DevTools\MondatApp\MondayApp\bin\Debug\MondayApp.exe
+C:\DevTools\MondatApp\MondayApp\bin\Debug\MondayApp.pdb
+C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.csproj.AssemblyReference.cache
+C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.csproj.CoreCompileInputs.cache
+C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.exe
+C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.pdb
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.dll
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.GridView.dll
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.UI.dll
+C:\DevTools\MondatApp\MondayApp\bin\Debug\TelerikCommon.dll
+C:\DevTools\MondatApp\MondayApp\bin\Debug\TelerikData.dll
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.xml
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.UI.xml
+C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.GridView.xml
+C:\DevTools\MondatApp\MondayApp\bin\Debug\TelerikData.xml
+C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.csproj.Up2Date
