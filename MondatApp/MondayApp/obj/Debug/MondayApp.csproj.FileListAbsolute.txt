@@ -15,3 +15,9 @@ C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.UI.xml
 C:\DevTools\MondatApp\MondayApp\bin\Debug\Telerik.WinControls.GridView.xml
 C:\DevTools\MondatApp\MondayApp\bin\Debug\TelerikData.xml
 C:\DevTools\MondatApp\MondayApp\obj\Debug\MondayApp.csproj.Up2Date
+C:\MondayApp\MondayApp.ini
+C:\MondayApp\MondayApp.exe
+C:\MondayApp\MondayApp.pdb
+\\10.3.3.10\Pub\Monday\MondayApp.ini
+\\10.3.3.10\Pub\Monday\MondayApp.exe
+\\10.3.3.10\Pub\Monday\MondayApp.pdb

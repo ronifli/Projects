@@ -1,0 +1,8 @@
+C:\devtools\Monday\MondayFetch\bin\Release\MondayFetch.ini
+C:\devtools\Monday\MondayFetch\bin\Release\MondayFetch.exe.config
+C:\devtools\Monday\MondayFetch\bin\Release\MondayFetch.exe
+C:\devtools\Monday\MondayFetch\bin\Release\MondayFetch.pdb
+C:\devtools\Monday\MondayFetch\obj\Release\MondayFetch.csproj.AssemblyReference.cache
+C:\devtools\Monday\MondayFetch\obj\Release\MondayFetch.csproj.CoreCompileInputs.cache
+C:\devtools\Monday\MondayFetch\obj\Release\MondayFetch.exe
+C:\devtools\Monday\MondayFetch\obj\Release\MondayFetch.pdb
