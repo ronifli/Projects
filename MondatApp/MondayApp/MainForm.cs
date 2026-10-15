@@ -17,7 +17,7 @@ namespace MondayApp
     {
         static readonly string[] Columns = { "Task", "SW Eng", "SW TT", "SW Duration", "RD Status", "is TT?", "Team", "R&D Priority", "Customer", "Ready For Release", "R&D DD" };
         static readonly string[] NumericColumns = { "SW Duration", "R&D Priority" }; // sorted / summed as numbers
-        static readonly string[] DateColumns = { "Ready For Release", "R&D DD" }; // sorted as dates, shown as yyyy-MM-dd
+        static readonly string[] DateColumns = { "Ready For Release", "R&D DD" }; // sorted as dates, shown as dd-MM-yyyy
         static readonly string SettingsFile = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MondayApp", "window.txt");
         static readonly string TasksFile = System.IO.Path.Combine(
@@ -34,6 +34,7 @@ namespace MondayApp
 
         // Extra monday columns chosen by the user (column ids); grid column name is ExtraPrefix + id
         const string ExtraPrefix = "m_";
+        const string DateFormat = "{0:dd-MM-yyyy}";
         static readonly string ExtraColumnsFile = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MondayApp", "extra_columns.txt");
         List<string> extraIds = new List<string>();
@@ -52,7 +53,7 @@ namespace MondayApp
                 table.Columns.Add(c, NumericColumns.Contains(c) ? typeof(double) : DateColumns.Contains(c) ? typeof(DateTime) : typeof(string));
             table.Columns.Add("Url");
             try { extraIds = System.IO.File.ReadAllLines(ExtraColumnsFile).Where(l => l.Trim() != "").ToList(); } catch (Exception) { }
-            foreach (var id in extraIds) table.Columns.Add(ExtraPrefix + id);
+            foreach (var id in extraIds) table.Columns.Add(ExtraPrefix + id, typeof(object)); // text, or DateTime when the column holds dates
 
             grid.Dock = DockStyle.Fill;
             grid.Font = Font;
@@ -76,13 +77,22 @@ namespace MondayApp
             grid.CellDoubleClick += Grid_CellDoubleClick;
             grid.ColumnChooserCreated += (s, e) => AddMondayColumnsButton(e.ColumnChooser);
             grid.ContextMenuOpening += Grid_ContextMenuOpening;
+            // Extra monday columns are typed object, and RadGridView ignores FormatString there - so dates are formatted here
+            grid.CellFormatting += (s, e) =>
+            {
+                if (e.CellElement.Value is DateTime) e.CellElement.Text = ((DateTime)e.CellElement.Value).ToString("dd-MM-yyyy");
+            };
             grid.FilterChanged += (s, e) => UpdateCount();
             grid.GroupSummaryEvaluate += (s, e) =>
             {
-                // SW Duration is in hours; also show days (8 hours a day)
-                if (e.SummaryItem.Name != "SW Duration" || !(e.Value is IConvertible)) return;
-                double hours = Convert.ToDouble(e.Value);
-                e.FormatString = "Σ " + hours.ToString("0.##") + " (" + (hours / 8).ToString("0.#") + " days)";
+                // Group header (its summary item has no aggregate, unlike the SW Duration total row):
+                // "<value>  -  12 tasks, SW Duration 34 days"
+                if (e.Group != null && (e.SummaryItem == null || e.SummaryItem.Aggregate == GridAggregateFunction.None))
+                {
+                    double sum = GroupDuration(e.Group);
+                    e.FormatString = string.Format("{0}   -   {1} task{2}, SW Duration {3:0.##} days",
+                        e.Value == null || e.Value is DBNull || e.Value.ToString().Trim() == "" ? "(empty)" : e.Value, e.Group.ItemCount, e.Group.ItemCount == 1 ? "" : "s", sum).Replace("{", "{{").Replace("}", "}}");
+                }
             };
 
             var statusStrip = new StatusStrip();
@@ -103,7 +113,6 @@ namespace MondayApp
         {
             grid.Columns["Url"].IsVisible = false;
             grid.Columns["Task"].Width = 400;
-            foreach (var c in DateColumns) grid.Columns[c].FormatString = "{0:yyyy-MM-dd}";
             loadLayout();
             grid.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.None; // layouts saved before fit-to-content had Fill
             grid.HorizontalScrollState = ScrollState.AlwaysShow;
@@ -115,6 +124,9 @@ namespace MondayApp
             foreach (DataColumn dc in table.Columns)
                 if (!grid.Columns.Any(c => (c.FieldName ?? c.Name) == dc.ColumnName))
                     grid.Columns.Add(new GridViewTextBoxColumn(dc.ColumnName, dc.ColumnName));
+            // After the layout, which may carry an older format. Extra columns: only their DateTime values are affected.
+            foreach (var c in DateColumns.Concat(extraIds.Select(id => ExtraPrefix + id)))
+                if (grid.Columns.Contains(c)) grid.Columns[c].FormatString = DateFormat;
             SetExtraHeaders();
             grid.Columns["Url"].IsVisible = false;
             grid.Columns["Url"].VisibleInColumnChooser = false; // internal: used by double-click only
@@ -194,7 +206,7 @@ namespace MondayApp
             grid.SaveLayout(layout);
             grid.DataSource = null;
             foreach (var id in removed) table.Columns.Remove(ExtraPrefix + id);
-            foreach (var id in added) table.Columns.Add(ExtraPrefix + id);
+            foreach (var id in added) table.Columns.Add(ExtraPrefix + id, typeof(object));
             extraIds = extraIds.Except(removed).Concat(added).ToList();
             grid.DataSource = table;
             SetupColumns(() => { layout.Position = 0; try { grid.LoadLayout(layout); } catch (Exception) { } });
@@ -207,6 +219,32 @@ namespace MondayApp
             }
             catch (Exception) { }
             if (added.Count > 0) LoadData(); // fetch the new columns' values
+        }
+
+        // Sum of SW Duration over a group's rows, including nested sub-groups
+        static double GroupDuration(Telerik.WinControls.Data.Group<GridViewRowInfo> group)
+        {
+            if (group.Groups.Count > 0) return group.Groups.Sum(g => GroupDuration(g));
+            double sum = 0;
+            foreach (GridViewRowInfo row in group)
+            {
+                var v = row.Cells["SW Duration"].Value;
+                if (v is double) sum += (double)v;
+            }
+            return sum;
+        }
+
+        static string ExtraValue(MondayTask t, string id)
+        {
+            string v;
+            return t.Extra != null && t.Extra.TryGetValue(id, out v) ? v : null;
+        }
+
+        static bool IsIsoDate(string s)
+        {
+            DateTime d;
+            return DateTime.TryParseExact(s.Trim(), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture,
+                                          System.Globalization.DateTimeStyles.None, out d);
         }
 
         // Empty or non-numeric text -> DBNull
@@ -283,7 +321,7 @@ namespace MondayApp
             {
                 var tasks = json.Deserialize<List<MondayTask>>(System.IO.File.ReadAllText(TasksFile));
                 FillTable(tasks);
-                status.Text = table.Rows.Count + " tasks from " + System.IO.File.GetLastWriteTime(TasksFile).ToString("yyyy-MM-dd HH:mm")
+                status.Text = table.Rows.Count + " tasks from " + System.IO.File.GetLastWriteTime(TasksFile).ToString("dd-MM-yyyy HH:mm")
                               + " (cached) - updating from monday...";
             }
             catch (Exception) { /* no cache yet */ }
@@ -294,12 +332,24 @@ namespace MondayApp
             grid.BeginUpdate();
             table.BeginLoadData();
             table.Rows.Clear();
+
+            // An extra column whose values are all yyyy-MM-dd dates (e.g. a mirrored date) holds DateTime values,
+            // so it sorts by date and shows as dd-MM-yyyy; any other column keeps its text
+            var dateIds = new HashSet<string>(extraIds.Where(id =>
+            {
+                var vals = tasks.Select(t => ExtraValue(t, id)).Where(s => !string.IsNullOrEmpty(s)).ToList();
+                return vals.Count > 0 && vals.All(IsIsoDate);
+            }));
+
             foreach (var t in tasks)
             {
                 var values = new List<object> { t.Task, t.Eng, t.TT, Number(t.Duration), t.Status, t.IsTT, t.Team, Number(t.Priority),
                                                 t.Customer, Date(t.ReadyForRelease), Date(t.RdDD), t.Url };
-                string v;
-                foreach (var id in extraIds) values.Add(t.Extra != null && t.Extra.TryGetValue(id, out v) ? v : null);
+                foreach (var id in extraIds)
+                {
+                    string v = ExtraValue(t, id);
+                    values.Add(v == null ? null : dateIds.Contains(id) ? Date(v) : v);
+                }
                 table.Rows.Add(values.ToArray());
             }
             table.EndLoadData();
