@@ -140,7 +140,7 @@ namespace Regression.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]	
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("25")]
         public int SmtpPort {
@@ -169,7 +169,7 @@ namespace Regression.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("regression@Cims.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Regression@Cims.com")]
         public string MailFrom {
             get {
                 return ((string)(this["MailFrom"]));
@@ -178,7 +178,7 @@ namespace Regression.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("roni.fli@gmail.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("roni.fli@gmail.com,Drorm@Cims.com")]
         public string MailTo {
             get {
                 return ((string)(this["MailTo"]));

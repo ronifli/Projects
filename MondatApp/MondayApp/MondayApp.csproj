@@ -49,6 +49,9 @@
     <Reference Include="TelerikCommon">
       <HintPath>$(TelerikDir)TelerikCommon.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.WinControls.ChartView">
+      <HintPath>$(TelerikDir)Telerik.WinControls.ChartView.dll</HintPath>
+    </Reference>
     <Reference Include="TelerikData">
       <HintPath>$(TelerikDir)TelerikData.dll</HintPath>
     </Reference>
@@ -58,6 +61,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MondayClient.cs" />
+    <Compile Include="MondayStats.cs" />
+    <Compile Include="TaskStatsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MondayColumnsForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -22,7 +22,7 @@ namespace MondayApp
         public string Id, Title, Type;
     }
 
-    class MondayClient
+    partial class MondayClient
     {
         string token, boardId, engCol, ttCol, durCol, statusCol, isTTCol, teamCol, priorityCol, customerCol, readyCol, rdDDCol;
         string[] skipStatuses;

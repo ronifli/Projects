@@ -100,8 +100,15 @@ namespace MondayApp
             statusStrip.Items.Add(refresh);
             refresh.Click += (s, e) => LoadData();
 
+            var tools = new ToolStripMenuItem("&Tools");
+            tools.DropDownItems.Add("Task &Statistics...", null, (s, e) => new TaskStatsForm(Font, Icon).Show(this));
+            var menu = new MenuStrip();
+            menu.Items.Add(tools);
+            MainMenuStrip = menu;
+
             Controls.Add(grid);
             Controls.Add(statusStrip);
+            Controls.Add(menu);
             Shown += (s, e) => { ShowCachedTasks(); LoadData(); };
         }
 
